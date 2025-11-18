@@ -14,10 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Standard pages with no verification
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/test', function () {
     return view('test');
 });
 
+// Verified logins
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
