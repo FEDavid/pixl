@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            
+            // Adding is_admin column
+            $table->boolean('is_admin')->default(false);
         });
     }
 
