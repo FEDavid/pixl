@@ -2,13 +2,14 @@
     <div class="flex w-full">
 
         {{-- @auth
-            <a href="/uploads/create" class="text-white">Add file</a> 
+            <a href="uploads/create" class="text-white">Add file</a> 
         @endauth --}}
         
         <ul class="w-full max-w-[1400px] grid gap-6 p-6 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] @auth pt-6 @endauth">
 
+            {{-- Success upload message --}}
             @if (session('success'))
-                <div class="bg-green-200 text-green-900 p-3 rounded">
+                <div class="bg-green-200 text-green-900 p-3 rounded grid justify-center content-center">
                     {{ session('success') }}
                 </div>
             @endif
@@ -25,7 +26,7 @@
                         >
 
                         {{-- Name --}}
-                        <p class="truncate w-full p-3">{{ $hostedImage->file_name }}</p>
+                        <p class="truncate w-full p-3">{{ $hostedImage->file_renamed }}</p>
                     </a>
 
                     {{-- Buttons

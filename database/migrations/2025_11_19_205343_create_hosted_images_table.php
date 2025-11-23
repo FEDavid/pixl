@@ -17,6 +17,9 @@ return new class extends Migration
             // Name for file
             $table->string('file_name');
 
+            // Named version for file - nullable for now, as will be assigned value later
+            $table->string('file_renamed')->nullable();
+
             // Foregin key to link to user
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 

@@ -21,6 +21,7 @@ class UploadController extends Controller
 
     public function store(Request $request)
     {
+        // Image validation before upload
         $request->validate([
             // 'hostedImage' => ['required', 'image', 'max:5120'], for max sizing
             'hostedImage' => ['required', 'image'],
@@ -31,6 +32,7 @@ class UploadController extends Controller
         $hostedImage = new HostedImage();
         $hostedImage->file_type = $file->getMimeType();
         $hostedImage->file_name = $file->getClientOriginalName();
+        $hostedImage->file_renamed = $file->getClientOriginalName();
         $hostedImage->path = $file->store('hosted_images', 'public');
         $hostedImage->file_size = $file->getSize();
         $hostedImage->user_id = auth()->id();
@@ -74,26 +76,25 @@ class UploadController extends Controller
         ]);
     }
 
+
+
     public function update(Request $request, HostedImage $hostedImage)
     {
         $request->validate([
-            'hostedImage' => ['required', 'image', 'max:5120'],
+            'file_renamed' => ['required', 'string', 'max:255'],
         ]);
 
-        Storage::disk('public')->delete($hostedImage->path);
-
-        $file = $request->file('hostedImage');
-
-        $hostedImage->file_type = $file->getMimeType();
-        $hostedImage->file_name = $file->getClientOriginalName();
-        $hostedImage->path = $file->store('hosted_images', 'public');
-        $hostedImage->file_size = $file->getSize();
-        $hostedImage->user_id = auth()->id();
+        $hostedImage->file_renamed = $request->file_renamed;
 
         $hostedImage->save();
 
-        return back();
+        return redirect()
+            ->route('uploads.show', $hostedImage->id)
+            ->with('success', 'Image name updated.');
     }
+
+
+
 
     public function destroy(HostedImage $hostedImage)
     {
