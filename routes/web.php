@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\LikesController;
+use App\Http\Controllers\MailController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,12 +48,15 @@ Route::get('/uploads/{hostedImage}', [UploadController::class, 'show'])->name('u
 
 // TESTING
 // For testing upload limits have increased correctly
-Route::get('/phpinfo-test', function () {
-    return [
-        'upload_max_filesize' => ini_get('upload_max_filesize'),
-        'post_max_size' => ini_get('post_max_size'),
-    ];
-});
+// Route::get('/phpinfo-test', function () {
+//     return [
+//         'upload_max_filesize' => ini_get('upload_max_filesize'),
+//         'post_max_size' => ini_get('post_max_size'),
+//     ];
+// });
+
+// // Testing mail route
+// Route::get('send-mail', [MailController::class, 'index']);
 
 // Auth middleware
 require __DIR__.'/auth.php';
