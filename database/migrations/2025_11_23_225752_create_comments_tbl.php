@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('comments', function (Blueprint $table) {
+            $table->id();
+
+            // Comments string
+            $table->text('content');
+
+            // Foreign key linked to users
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
+            // Foreign key linked to image
+            // Had to check this one, had to change constrain value as normally image_id would check for a table images, but I called mine something different.
+            $table->foreignId('image_id')->constrained('hosted_images')->cascadeOnDelete();
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('comments');
+    }
+};
