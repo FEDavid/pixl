@@ -24,4 +24,11 @@ class HostedImage extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Creating relationship for likes
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'image_id');
+    }
+
 }

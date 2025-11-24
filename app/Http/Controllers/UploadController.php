@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
+
+    // Custom function Dashboard to display only user's images
+    public function dashboard()
+    {
+        $hostedImages = auth()->user()->hostedImages;
+        return view('dashboard', ['hostedImages' => $hostedImages]);
+    }
+
     public function index()
     {
         $hostedImages = HostedImage::all();
@@ -58,7 +66,7 @@ class UploadController extends Controller
     public function show(HostedImage $hostedImage)
     {
         return view('hosted_images.show', [
-            'image' => $hostedImage
+            'hostedImage' => $hostedImage
         ]);
     }
 

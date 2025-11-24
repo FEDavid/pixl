@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\LikesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,10 +22,8 @@ Route::get('/uploads', [UploadController::class, 'index'])->name('uploads.index'
 
 // FIX: Place create BEFORE /uploads/{hostedImage}
 Route::middleware('auth')->group(function () {
-    // Dashboard route
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['verified'])->name('dashboard');
+    // Dashboard route - adjusted to include UploadController
+    Route::get('/dashboard', [UploadController::class, 'dashboard'])->name('dashboard');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -34,9 +33,12 @@ Route::middleware('auth')->group(function () {
     // Upload routes [Auth]
     Route::get('/uploads/create', [UploadController::class, 'create'])->name('uploads.create');
     Route::post('/uploads', [UploadController::class, 'store'])->name('uploads.store');
-    // Route::get('/uploads/{hostedImage}/edit', [UploadController::class, 'edit'])->name('uploads.edit');
     Route::put('/uploads/{hostedImage}', [UploadController::class, 'update'])->name('uploads.update');
     Route::delete('/uploads/{hostedImage}', [UploadController::class, 'destroy'])->name('uploads.destroy');
+
+    // Show routes [For applying likes and disliking)
+    Route::post('/uploads/{hostedImage}/like', [LikesController::class, 'add_like'])->name('uploads.like');
+    Route::post('/uploads/{hostedImage}/dislike', [LikesController::class, 'remove_like'])->name('uploads.dislike');
 });
 
 // Public wildcard route placed *after* the protected routes
