@@ -55,8 +55,8 @@ Route::get('/uploads/{hostedImage}', [UploadController::class, 'show'])->name('u
 //     ];
 // });
 
-// // Testing mail route
-// Route::get('send-mail', [MailController::class, 'index']);
+// Testing mail route
+Route::get('send-mail', [MailController::class, 'index']);
 
 // Auth middleware
 require __DIR__.'/auth.php';

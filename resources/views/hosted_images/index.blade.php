@@ -1,10 +1,6 @@
 <x-app-layout>
     <div class="flex w-full">
-
-        {{-- @auth
-            <a href="uploads/create" class="text-white">Add file</a> 
-        @endauth --}}
-        
+       
         <ul class="w-full max-w-[1400px] grid gap-6 p-6 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] @auth pt-6 @endauth">
 
             {{-- Success upload message --}}
@@ -48,6 +44,7 @@
                             </form>
                         </div>
                     @endauth --}}
+
                 </li>
             @endforeach
         </ul>
