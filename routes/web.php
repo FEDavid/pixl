@@ -43,6 +43,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/uploads/{hostedImage}/dislike', [LikesController::class, 'remove_like'])->name('uploads.dislike');
 });
 
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin.panel');
+    })->name('admin.panel');
+});
+
+
 // Public wildcard route placed *after* the protected routes
 Route::get('/uploads/{hostedImage}', [UploadController::class, 'show'])->name('uploads.show');
 
