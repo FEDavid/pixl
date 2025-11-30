@@ -106,12 +106,19 @@ class UploadController extends Controller
 
     public function destroy(HostedImage $hostedImage)
     {
+        // Testing
+        // $testvar = Storage::disk('public')->delete($hostedImage->path);
+        // dd($testvar);
+        // return back()->with([
+        //     'operation' => 'deleted',
+        //     'id'        => $hostedImage->id,
+        // ]);
+
+        // Confirmed it seems to be deleting images
         Storage::disk('public')->delete($hostedImage->path);
         $hostedImage->delete();
-
-        return back()->with([
-            'operation' => 'deleted',
-            'id'        => $hostedImage->id,
-        ]);
+        return redirect()
+            ->route('uploads.index')
+            ->with('deleted', 'Image deleted');
     }
 }

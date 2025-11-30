@@ -12,9 +12,17 @@
 
         // Declare user_id
         $user_id = auth()->id();
+
+        $is_admin = auth()->user()->is_admin;
+
     @endphp
 
     <section class="grid w-full p-6 gap-y-6 grid-cols-1 sm:grid-cols-[1fr,33%,1fr]  sm:gap-x-6">
+
+        {{-- Testing stuff --}}
+        {{-- @if($is_admin)
+            <h1>Admin man</h1>
+        @endif --}}
 
         {{-- Image and title --}}
         <div class="col-start-1 sm:col-start-2 w-full mx-auto">
@@ -108,7 +116,7 @@
             <div class="flex flex-col gap-3 w-full">
                 <a href="{{ route('uploads.index') }}" class="w-full h-full text-center py-1 bg-indigo-400 border border-transparent font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-300 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 rounded-md">Back</a>
                 {{-- If the user_id of logged in user matches the image's user_id foreign key, show delete button, otherwise just show back button --}}
-                @if (auth()->id() === $hostedImage->user_id)
+                @if (auth()->id() === $hostedImage->user_id || $is_admin)
 
                     {{-- Edit button --}}
                     @if (!$editing)
@@ -118,10 +126,16 @@
                     @endif
 
                     {{-- Delete button --}}
-                    @csrf
-                    @method('delete')
-                    <input type="submit" value="Delete" class="cursor-pointer w-full h-full py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                
+                    <form action="{{ route('uploads.destroy', $hostedImage->id) }}" method="POST" class="w-full">
+                        @csrf
+                        @method('DELETE')
+                        <input 
+                            type="submit" 
+                            value="Delete" 
+                            class="cursor-pointer w-full h-full py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                        >
+                    </form>
+
                 @endif
             </div>
 

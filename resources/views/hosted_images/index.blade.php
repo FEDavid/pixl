@@ -3,10 +3,19 @@
        
         <ul class="w-full max-w-[1400px] grid gap-6 p-6 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] @auth pt-6 @endauth">
 
-            {{-- Success upload message --}}
+            {{-- Session messages --}}
+            
+            {{-- Upload success --}}
             @if (session('success'))
                 <div class="bg-green-200 text-green-900 p-3 rounded grid justify-center content-center">
                     {{ session('success') }}
+                </div>
+            @endif
+
+            {{-- Deletion success --}}
+            @if (session('deleted'))
+                <div class="bg-red-200 text-red-900 p-3 rounded grid justify-center content-center">
+                    {{ session('deleted') }}
                 </div>
             @endif
 
