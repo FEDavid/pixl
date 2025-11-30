@@ -36,9 +36,9 @@
         {{-- Users images --}}
         <div class="sm:rounded-lg p-3 bg-zinc-700">
             <button id="header_toggle" class="p-6 bg-indigo-300 overflow-hidden rounded-lg font-bold text-gray-900 mb-3 w-full text-left flex justify-between" onclick="toggleSection('user-images-section')"><p>.your images</p><span id="collapse_icon" class="material-symbols-outlined">collapse_content</span><span id="expand_icon" class="material-symbols-outlined hidden">expand_content</span></button>
-            <div id="user-images-section" class="flex flex-col sm:flex-row justify-start gap-3">
+            <div id="user-images-section" class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] justify-start gap-3">
                 @foreach ($hostedImages as $hostedImage)
-                    <li value="{{ $hostedImage->id }}" class="text-white bg-zinc-800 flex flex-col rounded-lg text-ellipsis hover:opacity-50 transition ease-in-out duration-150 w-full sm:w-[300px]">
+                    <li value="{{ $hostedImage->id }}" class="text-white bg-zinc-800 flex flex-col rounded-lg text-ellipsis hover:opacity-50 transition ease-in-out duration-150 w-full">
                         
                         {{-- Wrapping content in link --}}
                         <a href="{{ route('uploads.show', $hostedImage->id) }}" class="aspect-square w-full overflow-hidden h-[250px] sm:h-[300px]">
