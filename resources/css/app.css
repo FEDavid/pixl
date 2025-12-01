@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Adjusting the material font icons I have */
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
@@ -13,3 +14,57 @@
 .material-symbols-outlined.hidden {
   display: none;
 }
+
+/* WRAPPER — makes sure we don't nuke other navs */
+.pagination-styles nav * {
+    @apply bg-transparent text-zinc-300 border-zinc-700;
+}
+
+/* MOBILE BUTTONS */
+.pagination-styles nav .sm\:hidden span,
+.pagination-styles nav .sm\:hidden a {
+    @apply bg-zinc-800 text-zinc-200 border border-zinc-700 rounded-md;
+}
+
+.pagination-styles nav .sm\:hidden a:hover {
+    @apply bg-indigo-300 text-white;
+}
+
+/* DESKTOP: TEXT ("Showing X to Y of Z results") */
+.pagination-styles nav p,
+.pagination-styles nav p span {
+    @apply text-zinc-300;
+}
+
+/* DESKTOP: PAGE CONTAINER */
+.pagination-styles nav .inline-flex {
+    @apply bg-transparent;
+}
+
+/* DESKTOP: NORMAL PAGE LINKS */
+.pagination-styles nav a[aria-label^="Go to page"],
+.pagination-styles nav a[rel="next"],
+.pagination-styles nav a[rel="prev"] {
+    @apply bg-zinc-800 text-zinc-200 border border-zinc-700;
+}
+
+.pagination-styles nav a[aria-label^="Go to page"]:hover,
+.pagination-styles nav a[rel="next"]:hover,
+.pagination-styles nav a[rel="prev"]:hover {
+    @apply bg-indigo-300 text-white;
+}
+
+/* DESKTOP: ACTIVE PAGE */
+.pagination-styles nav span[aria-current="page"] > span {
+    @apply bg-indigo-500 text-white border-indigo-500;
+}
+
+/* DESKTOP: DISABLED PREV/NEXT */
+.pagination-styles nav span[aria-disabled="true"] > span {
+    @apply bg-zinc-800 text-zinc-500 border border-zinc-700 cursor-not-allowed;
+}
+
+.pagination-styles nav[role="navigation"] {
+    @apply w-full;
+}
+

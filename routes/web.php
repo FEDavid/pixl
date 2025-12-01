@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\LikesController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MailController;
 
 use Illuminate\Support\Facades\Route;
@@ -24,8 +25,8 @@ Route::get('/uploads', [UploadController::class, 'index'])->name('uploads.index'
 
 // FIX: Place create BEFORE /uploads/{hostedImage}
 Route::middleware('auth')->group(function () {
-    // Dashboard route - adjusted to include UploadController
-    Route::get('/dashboard', [UploadController::class, 'dashboard'])->name('dashboard');
+    // Profile route - adjusted to include UploadController
+    Route::get('/user_profile', [UploadController::class, 'profile'])->name('user_profile');
 
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -44,23 +45,20 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', function () {
-        return view('admin.panel');
-    })->name('admin.panel');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.panel');
 });
-
 
 // Public wildcard route placed *after* the protected routes
 Route::get('/uploads/{hostedImage}', [UploadController::class, 'show'])->name('uploads.show');
 
 // TESTING
 // For testing upload limits have increased correctly
-// Route::get('/phpinfo-test', function () {
-//     return [
-//         'upload_max_filesize' => ini_get('upload_max_filesize'),
-//         'post_max_size' => ini_get('post_max_size'),
-//     ];
-// });
+Route::get('/phpinfo-test', function () {
+    return [
+        'upload_max_filesize' => ini_get('upload_max_filesize'),
+        'post_max_size' => ini_get('post_max_size'),
+    ];
+});
 
 // Testing mail route
 Route::get('send-mail', [MailController::class, 'index']);

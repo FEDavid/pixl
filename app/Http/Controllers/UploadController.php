@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+// Import models
 use App\Models\HostedImage;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -10,10 +12,10 @@ class UploadController extends Controller
 {
 
     // Custom function Dashboard to display only user's images
-    public function dashboard()
+    public function profile()
     {
         $hostedImages = auth()->user()->hostedImages;
-        return view('dashboard', ['hostedImages' => $hostedImages]);
+        return view('profile', ['hostedImages' => $hostedImages]);
     }
 
     public function index()
@@ -32,32 +34,22 @@ class UploadController extends Controller
         // Image validation before upload
         $request->validate([
             // Updated to now accept an array, and then validating that images are inside that array.
-            'hostedImage' => ['required', 'array'],
-            'hostedImage.*' => ['image'], // add 'max:5120' if you want size limit back
+            // Validation added to confirm multiple things -
+            // - required, literally that the item exists and is valid, so not null meaning the array cannot be empty and must have at least 1 image
+            // - array, that itself is an array being provided
+            // - max:3, that a maximum of 3 images can be uploaded at a time
+
+            // -'image', that the item being uploaded is in fact an image
+            // -'mimes', that the file type being provided matches the ones provided
+            // -'max:20480', maximum file size of 20MB.
+
+            // Requesting the route /phpinfo-test will confirm we have increased the individual file and POST size on the PHP config
+            // Allowing for larger files to be uploaded, at a maximum of 25M per POST, but users can upload 1 image at 20MB for example.
+
+            // Added keyword multiple on input for upload to alow multiple uploads.
+            'hostedImage' => ['required', 'array', 'max:3'],
+            'hostedImage.*' => ['image', 'mimes:jpg,jpeg,png', 'max:20480'],
         ]);
-
-        // // Testing as image not saving when uploading on AWS version
-        // $files = $request->file('hostedImage');
-
-        // dd(
-        //     $files,                          // the whole array
-        //     array_map(fn($f) => $f->isValid(), $files), // validity for each file
-        //     array_map(fn($f) => $f->getError(), $files),
-        //     ini_get('upload_max_filesize'),
-        //     ini_get('post_max_size')
-        // );
-
-        // $file = $request->file('hostedImage');
-
-        // $hostedImage = new HostedImage();
-        // $hostedImage->file_type = $file->getMimeType();
-        // $hostedImage->file_name = $file->getClientOriginalName();
-        // $hostedImage->file_renamed = $file->getClientOriginalName();
-        // $hostedImage->path = $file->store('hosted_images', 'public');
-        // $hostedImage->file_size = $file->getSize();
-        // $hostedImage->user_id = auth()->id();
-
-        // $hostedImage->save();
 
         // Instead of singular save above, looping through array and saving each image
         foreach ($request->file('hostedImage') as $file) {
@@ -71,20 +63,11 @@ class UploadController extends Controller
             $hostedImage->save();
         }
 
-        // For returning preview, will fix later
-        // return view('hosted_images.create', [
-        //     'id'        => $hostedImage->id,
-        //     'path'      => $hostedImage->path,
-        //     'file_name' => $hostedImage->file_name,
-        //     'file_type' => $hostedImage->file_type,
-        //     'file_size' => $hostedImage->file_size,
-        //     'user_id'   => $hostedImage->user_id,
-        // ]);
-
         // For redirecting to uploads
         return redirect()->route('uploads.index')->with('success', 'Image(s) uploaded!');
     }
 
+    
 
     // Slightly different function to one showcased in class, reason for this is because I am using public storage so image URLs can be shared
     public function show(HostedImage $hostedImage)

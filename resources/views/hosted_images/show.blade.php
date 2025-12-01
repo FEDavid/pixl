@@ -13,7 +13,9 @@
         // Declare user_id
         $user_id = auth()->id();
 
-        $is_admin = auth()->user()->is_admin;
+        // ?-> Functions as a check if it's there, otherwise null operator. 
+        // Then if it comes out null the ?? operator will set the variable to the end result, in this case false.
+        $is_admin = auth()->user()?->is_admin ?? false;
 
     @endphp
 

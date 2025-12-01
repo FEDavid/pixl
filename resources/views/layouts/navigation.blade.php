@@ -6,7 +6,7 @@
                 <div class="flex">
                     <!-- Logo -->
                     <div class="shrink-0 flex items-center">
-                        <a href="{{ route('dashboard') }}">
+                        <a href="{{ route('user_profile') }}">
                             <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                         </a>
                     </div>
@@ -21,11 +21,10 @@
                     </div>
                     @endif
 
-
-                    {{-- Dashboard link --}}
+                    {{-- Profile link --}}
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
+                        <x-nav-link :href="route('user_profile')" :active="request()->routeIs('user_profile')">
+                            {{ __('Profile') }}
                         </x-nav-link>
                     </div>
 
@@ -100,15 +99,50 @@
             </div>
         </div>
 
-        <!-- Responsive Navigation Menu -->
+        {{-- Responsive Navigation Menu --}}
         <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
             <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
+
+                {{-- Admin Panel --}}
+                @if(auth()->user()->is_admin)
+                    <x-responsive-nav-link 
+                        :href="route('admin.panel')" 
+                        :active="request()->routeIs('admin.panel')">
+                        {{ __('Admin Panel') }}
+                    </x-responsive-nav-link>
+                @endif
+
+                {{-- Profile --}}
+                <x-responsive-nav-link 
+                    :href="route('user_profile')" 
+                    :active="request()->routeIs('user_profile')">
+                    {{ __('Profile') }}
                 </x-responsive-nav-link>
+
+                {{-- View Images --}}
+                <x-responsive-nav-link 
+                    :href="route('uploads.index')" 
+                    :active="request()->routeIs('uploads.index')">
+                    {{ __('View Images') }}
+                </x-responsive-nav-link>
+
+                {{-- Upload New Image --}}
+                <x-responsive-nav-link 
+                    :href="route('uploads.create')" 
+                    :active="request()->routeIs('uploads.create')">
+                    {{ __('Upload New Image') }}
+                </x-responsive-nav-link>
+
+                {{-- View Image (only when actually viewing one) --}}
+                @if (request()->routeIs('uploads.show'))
+                    <x-responsive-nav-link :active="true">
+                        {{ __('View Image') }}
+                    </x-responsive-nav-link>
+                @endif
+
             </div>
 
-            <!-- Responsive Settings Options -->
+            {{-- Responsive Settings Options --}}
             <div class="pt-4 pb-1 border-t border-gray-200">
                 <div class="px-4">
                     <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
@@ -116,17 +150,13 @@
                 </div>
 
                 <div class="mt-3 space-y-1">
-                    {{-- Custom --}}
-                    <x-responsive-nav-link :href="route('uploads.index')">
-                        {{ __('Uploads') }}
-                    </x-responsive-nav-link>
 
-                    {{-- Standard menu items --}}
+                    {{-- Profile Settings --}}
                     <x-responsive-nav-link :href="route('profile.edit')">
-                        {{ __('Profile') }}
+                        {{ __('Profile Settings') }}
                     </x-responsive-nav-link>
 
-                    <!-- Authentication -->
+                    {{-- Logout --}}
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
 
@@ -139,14 +169,15 @@
                 </div>
             </div>
         </div>
+
     </nav>
     @else
     <nav class="flex justify-between p-6">
         <a href="{{ route('uploads.index') }}" class="self-center"><h1 class="text-3xl select-none">pix<span class="font-bold">l</span>.</h1></a>
         {{-- Login logic --}}
-        <div class="text-right z-10">
-            <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
-            <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
+        <div class="text-right z-10 flex">
+            <a href="{{ route('login') }}" class="content-center font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">Log in</a>
+            <a href="{{ route('register') }}" class="content-center ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">Register</a>
         </div>
     </nav>
 @endauth
