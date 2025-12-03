@@ -29,5 +29,8 @@ class AdminUserSeeder extends Seeder
                 'is_admin' => false,
             ]
         );
+
+        // Using factory to generate other random users
+        HostedImage::factory(25)->create();
     }
 }

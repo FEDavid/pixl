@@ -32,21 +32,22 @@ class UploadController extends Controller
     public function store(Request $request)
     {
         // Image validation before upload
+
+        // Updated to now accept an array, and then validating that images are inside that array.
+        // Validation added to confirm multiple things -
+        // - required, literally that the item exists and is valid, so not null meaning the array cannot be empty and must have at least 1 image
+        // - array, that itself is an array being provided
+        // - max:3, that a maximum of 3 images can be uploaded at a time
+
+        // -'image', that the item being uploaded is in fact an image
+        // -'mimes', that the file type being provided matches the ones provided
+        // -'max:20480', maximum file size of 20MB.
+
+        // Requesting the route /phpinfo-test will confirm we have increased the individual file and POST size on the PHP config
+        // Allowing for larger files to be uploaded, at a maximum of 25M per POST, but users can upload 1 image at 20MB for example.
+
+        // Added keyword multiple on input for upload to alow multiple uploads.
         $request->validate([
-            // Updated to now accept an array, and then validating that images are inside that array.
-            // Validation added to confirm multiple things -
-            // - required, literally that the item exists and is valid, so not null meaning the array cannot be empty and must have at least 1 image
-            // - array, that itself is an array being provided
-            // - max:3, that a maximum of 3 images can be uploaded at a time
-
-            // -'image', that the item being uploaded is in fact an image
-            // -'mimes', that the file type being provided matches the ones provided
-            // -'max:20480', maximum file size of 20MB.
-
-            // Requesting the route /phpinfo-test will confirm we have increased the individual file and POST size on the PHP config
-            // Allowing for larger files to be uploaded, at a maximum of 25M per POST, but users can upload 1 image at 20MB for example.
-
-            // Added keyword multiple on input for upload to alow multiple uploads.
             'hostedImage' => ['required', 'array', 'max:3'],
             'hostedImage.*' => ['image', 'mimes:jpg,jpeg,png', 'max:20480'],
         ]);
@@ -129,3 +130,4 @@ class UploadController extends Controller
             ->with('deleted', 'Image deleted');
     }
 }
+

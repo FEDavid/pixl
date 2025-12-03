@@ -52,7 +52,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('/uploads/{hostedImage}', [UploadController::class, 'show'])->name('uploads.show');
 
 // TESTING
-// For testing upload limits have increased correctly
+// For testing upload limits have increased correctly --- or use /phpinfo.php
 Route::get('/phpinfo-test', function () {
     return [
         'upload_max_filesize' => ini_get('upload_max_filesize'),
@@ -65,3 +65,6 @@ Route::get('send-mail', [MailController::class, 'index']);
 
 // Auth middleware
 require __DIR__.'/auth.php';
+
+
+
